@@ -22,44 +22,22 @@ export default function Home() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    // Let the form submit naturally to Formspree
+    // The form will redirect to Formspree's success page
+    // We'll show our success message immediately for better UX
     e.preventDefault();
     setIsLoading(true);
     
-    try {
-      // For testing: log to console
-      console.log('Form submission:', formData);
-      
-      // Submit to Formspree
-      const response = await fetch('https://formspree.io/f/xvgvgnak', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          role: formData.role,
-          subject: formData.subject,
-          message: `New waitlist signup - Role: ${formData.role}, Subject: ${formData.subject}`
-        }),
-      });
-
-      if (response.ok) {
-        console.log('Form submitted successfully!');
-        setIsSubmitted(true);
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      // For now, still show success message for better UX
-      // In production, you might want to show an error message
-      console.log('Form data (for manual collection):', formData);
+    // Show success message immediately
+    setTimeout(() => {
       setIsSubmitted(true);
-    }
+      setIsLoading(false);
+    }, 1000);
     
-    setIsLoading(false);
+    // Submit the form to Formspree
+    const form = e.target as HTMLFormElement;
+    form.submit();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -186,7 +164,15 @@ export default function Home() {
                     <p className="text-gray-600">Join the waitlist and get our "Exam Checklist" PDF instantly.</p>
                   </div>
                   
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form 
+                    action="https://formspree.io/f/xvgvgnak"
+                    method="POST"
+                    onSubmit={handleSubmit} 
+                    className="space-y-4"
+                  >
+                    {/* Hidden field for Formspree message */}
+                    <input type="hidden" name="message" value={`New waitlist signup - Role: ${formData.role}, Subject: ${formData.subject}`} />
+                    
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
