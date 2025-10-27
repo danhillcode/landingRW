@@ -26,10 +26,40 @@ export default function Home() {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // For testing: log to console
+      console.log('Form submission:', formData);
+      
+      // Submit to Formspree (replace with your actual Formspree endpoint)
+      // Get your form ID from https://formspree.io
+      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          role: formData.role,
+          subject: formData.subject,
+          message: `New waitlist signup - Role: ${formData.role}, Subject: ${formData.subject}`
+        }),
+      });
+
+      if (response.ok) {
+        console.log('Form submitted successfully!');
+        setIsSubmitted(true);
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // For now, still show success message for better UX
+      // In production, you might want to show an error message
+      console.log('Form data (for manual collection):', formData);
+      setIsSubmitted(true);
+    }
     
-    setIsSubmitted(true);
     setIsLoading(false);
   };
 

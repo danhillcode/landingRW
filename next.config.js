@@ -5,8 +5,8 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  assetPrefix: process.env.NODE_ENV === 'production' ? '/revisewell-landing' : '',
-  basePath: process.env.NODE_ENV === 'production' ? '/revisewell-landing' : ''
+  assetPrefix: process.env.NODE_ENV === 'production' ? '/landingRW' : '',
+  basePath: process.env.NODE_ENV === 'production' ? '/landingRW' : ''
 }
 
 module.exports = nextConfig
