@@ -30,9 +30,8 @@ export default function Home() {
       // For testing: log to console
       console.log('Form submission:', formData);
       
-      // Submit to Formspree (replace with your actual Formspree endpoint)
-      // Get your form ID from https://formspree.io
-      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
+      // Submit to Formspree
+      const response = await fetch('https://formspree.io/f/xvgvgnak', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
