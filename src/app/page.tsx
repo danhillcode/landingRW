@@ -23,11 +23,13 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
-    // Let the form submit naturally to Formspree
-    // The form will redirect to Formspree's success page
-    // We'll show our success message immediately for better UX
     e.preventDefault();
     setIsLoading(true);
+    
+    // Track conversion with Google Ads
+    if (typeof window !== 'undefined' && (window as any).gtag_report_conversion) {
+      (window as any).gtag_report_conversion();
+    }
     
     // Show success message immediately
     setTimeout(() => {
